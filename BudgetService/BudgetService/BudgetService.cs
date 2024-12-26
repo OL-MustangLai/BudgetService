@@ -7,13 +7,13 @@ public class BudgetService(IBudgetRepo repo)
 {
     public decimal Query(DateTime start, DateTime end)
     {
-        var totalDays = (end - start).Days + 1;
 
-        if (totalDays < 1)
+        if (start > end)
         {
             return 0;
         }
 
+        // var totalDays = (end - start).Days + 1;
         var budgetsList = repo.GetAll();
         var budgetsLookup = budgetsList.ToDictionary(x => x.YearMonth, x => x.Amount);
 

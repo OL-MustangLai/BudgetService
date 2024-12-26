@@ -127,4 +127,41 @@ public class Tests
 
         query.Should().Be(43000);
     }
+    
+    [Test]
+    public void Query_Days_Cross_Over_Several_Month()
+    {
+        
+        _budgetRepo.GetAll().Returns(
+        [
+            
+            new Budget
+            {
+                YearMonth = "202409",
+                Amount = 30000
+            },
+            new Budget
+            {
+                YearMonth = "202410",
+                Amount = 31000
+            },
+            new Budget
+            {
+                YearMonth = "202411",
+                Amount = 30000
+            },
+
+            new Budget
+            {
+                YearMonth = "202412",
+                Amount = 62000
+            }
+        ]);
+        var start = new DateTime(2024, 09, 25);
+        var end = new DateTime(2024, 12, 03);
+
+        var query = _budgetService.Query(start, end);
+
+        query.Should().Be(74000);
+    }
 }
